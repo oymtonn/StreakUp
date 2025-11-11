@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.11",
+    "pg": "^8.16.3"
+  },
+  "scripts": {
+    "dev": "concurrently \"cd client && vite\" \"cd server && nodemon server\"",
+    "start": "nodemon server/server.js",
+    "reset": "node ./server/config/reset.js"
+  },
+  "type": "module"
+}
