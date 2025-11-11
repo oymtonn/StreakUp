@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
     res.status(200).send('streak server')
 })
 
-const PORT = 3000;
+const PORT = 3001;
 
 app.listen(PORT, () => {
     console.log(`Server listening on http://localhost${PORT}`);

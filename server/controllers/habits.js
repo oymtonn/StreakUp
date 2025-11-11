@@ -1,6 +1,6 @@
 import { pool } from '../config/database.js';
 
-export const getHabits = async () => {
+export const getHabits = async (req, res) => {
     let results;
 
     try {
@@ -11,5 +11,4 @@ export const getHabits = async () => {
     }
 
     res.status(200).json(results.rows);
-    
 }
