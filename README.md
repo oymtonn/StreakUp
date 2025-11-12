@@ -36,11 +36,11 @@ Users will be able to add tasks they plan to compelte over a longer period of ti
 
 [gif goes here]
 
-### Dashboard
+### Dashboard ✅
 
 A quick dashboard on the main page that will give them all updates on their progress daily, and show which tasks/habits still need to be worked on.
 
-[gif goes here]
+<img src='client/src/assets/demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ### [ADDITIONAL FEATURES GO HERE - ADD ALL FEATURES HERE IN THE FORMAT ABOVE; you will check these off and add gifs as you complete them]
 
