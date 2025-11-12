@@ -1,5 +1,6 @@
 import { pool } from './database.js';
 import habitData from '../data/habitData.js';
+import taskData from '../data/taskData.js';
 
 const createTables = async () => {
 
@@ -11,11 +12,28 @@ const createTables = async () => {
                 id SERIAL PRIMARY KEY,
                 user_id VARCHAR(10) NOT NULL,
                 title VARCHAR(255) NOT NULL,
+                priority VARCHAR(10) NOT NULL,
+                tag VARCHAR(10),
                 frequency VARCHAR(10) NOT NULL,
                 streak VARCHAR(10) NOT NULL,
                 last_completed_date DATE NOT NULL
             )
             `);
+        
+        await pool.query(`DROP TABLE IF EXISTS tasks`);
+
+        await pool.query(`
+            CREATE TABLE tasks(
+                id SERIAL PRIMARY KEY,
+                user_id VARCHAR(10) NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                priority VARCHAR(10) NOT NULL,
+                tag VARCHAR(10),
+                completed BOOLEAN NOT NULL DEFAULT FALSE,
+                progress INTEGER NOT NULL DEFAULT 0,
+                due_date TIMESTAMPTZ
+            )
+            `)
     }
 
     catch (err) {
@@ -27,12 +45,14 @@ const createTables = async () => {
 const seedHabitTable = async () => {
     for (const habit of habitData) {
         await pool.query(
-            `INSERT INTO habits (id, user_id, title, frequency, streak, last_completed_date)
-             VALUES ($1, $2, $3, $4, $5, $6)`,
+            `INSERT INTO habits (id, user_id, title, priority, tag, frequency, streak, last_completed_date)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
              [
                 habit.id,
                 habit.user_id,
                 habit.title,
+                habit.priority,
+                habit.tag,
                 habit.frequency,
                 habit.streak,
                 habit.last_completed_date
@@ -42,9 +62,31 @@ const seedHabitTable = async () => {
     }
 }
 
+const seedTaskTable = async () => {
+    for (const task of taskData) {
+        await pool.query(
+            `INSERT INTO tasks (id, user_id, title, priority, tag, completed, progress, due_date)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+             [
+                task.id,
+                task.user_id,
+                task.title,
+                task.priority,
+                task.tag,
+                task.completed,
+                task.progress,
+                task.due_date
+             ]
+            );
+            console.log(`${task.title} added`)
+    }
+
+}
+
 const resetDatabase = async () => {
     await createTables();
     await seedHabitTable();
+    await seedTaskTable();
 
     console.log('Database reset');
     await pool.end();
