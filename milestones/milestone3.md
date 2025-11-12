@@ -26,7 +26,7 @@ We worked together well to coordinate the tasks we needed to complete, including
 
 ### 2. What were some challenges your group faced in this unit?
 
-No challenges faced so far
+Challenges faced with using new GitHub features such as the project board and issues. Was able to learn and catch up quick though.
 
 ### Did you finish all of your tasks in your sprint plan for this week? If you did not finish all of the planned tasks, how would you prioritize the remaining tasks on your list?
 
