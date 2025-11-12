@@ -78,7 +78,6 @@ const Dashboard = () => {
         </h1>
 
         <div style={{ display: "flex", gap: "20px" }}>
-          {/* Habits Section */}
           <div style={{ flex: "1" }}>
             <div
               style={{
@@ -163,7 +162,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Tasks Section */}
           <div style={{ flex: "1" }}>
             <div
               style={{
