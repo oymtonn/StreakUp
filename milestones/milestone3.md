@@ -22,20 +22,20 @@ You will need to reference the GitHub Project Management guide in the course por
 
 ### 1. What went well during this unit?
 
-We worked together well to coordinate the tasks we needed to complete, including server logic and frontend design.
+Setting up the git enviornment was very helpful and will set us up for the following week.
 
 ### 2. What were some challenges your group faced in this unit?
 
-Challenges faced with using new GitHub features such as the project board and issues. Was able to learn and catch up quick though.
+Understanding how the whole repo/project worked since neither of us have ever used the project feature.
 
 ### Did you finish all of your tasks in your sprint plan for this week? If you did not finish all of the planned tasks, how would you prioritize the remaining tasks on your list?
 
-Not yet but we plan to prioritize by coordinating more effectively and assigning specific tasks so that there's no conflict
+Yes we have finished our plan for the week and hope to finish by next week.
 
 ### Which features and user stories would you consider “at risk”? How will you change your plan if those items remain “at risk”?
 
-None so far. We are on track to finish and implement all features before demo day.
+For now none of the stories are at risk and we still plan to eventually implement them all.
 
 ### 5. What additional support will you need in upcoming units as you continue to work on your final project?
 
-No support needed
+If we need extra support we'll be sure to ask in Slack.
