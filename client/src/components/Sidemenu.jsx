@@ -191,18 +191,6 @@ const Sidemenu = () => {
           }}
         >
           <span>User</span>
-          <span
-            style={{
-              fontSize: '0.68rem',
-              padding: '2px 8px',
-              borderRadius: '999px',
-              backgroundColor: '#e5e7eb',
-              color: '#4b5563',
-              fontWeight: 600,
-            }}
-          >
-            Focus mode
-          </span>
         </div>
         <p
           style={{

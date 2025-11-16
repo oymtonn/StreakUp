@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidemenu from '../components/Sidemenu';
 
 const Dashboard = () => {
   const [habits, setHabits] = useState([]);
   const [tasks, setTasks] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getHabits = async () => {
@@ -264,6 +267,7 @@ const Dashboard = () => {
                     <div
                       key={habit.id}
                       style={{
+                        position: 'relative', // Edit chip anchor
                         background: 'linear-gradient(135deg,#f9fafb,#f3f4f6)',
                         border: '1px solid #e5e7eb',
                         borderRadius: '12px',
@@ -362,6 +366,31 @@ const Dashboard = () => {
                           </span>
                         </div>
                       </div>
+
+                      {/* Edit button for habit */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/habits/edit/${habit.id}`);
+                        }}
+                        style={{
+                          position: 'absolute',
+                          top: '8px',
+                          right: '10px',
+                          padding: '4px 10px',
+                          borderRadius: '999px',
+                          border: '1px solid #d1d5db',
+                          backgroundColor: '#ffffff',
+                          fontSize: '0.75rem',
+                          color: '#4b5563',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          boxShadow: '0 1px 2px rgba(0,0,0,0.08)',
+                        }}
+                      >
+                        Edit
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -466,7 +495,7 @@ const Dashboard = () => {
                       <div
                         key={task.id}
                         style={{
-                          position: 'relative', // <-- so the badge can float
+                          position: 'relative', // anchor for Edit + Done
                           borderRadius: '12px',
                           padding: '12px 14px',
                           border: task.completed
@@ -606,12 +635,37 @@ const Dashboard = () => {
                           </div>
                         </div>
 
-                        {/* Floating Done badge */}
+                        {/* Edit button for task */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            console.log('Edit task', task.id);
+                            // later: navigate(`/tasks/${task.id}/edit`);
+                          }}
+                          style={{
+                            position: 'absolute',
+                            top: '8px',
+                            right: '10px',
+                            padding: '4px 10px',
+                            borderRadius: '999px',
+                            border: '1px solid #d1d5db',
+                            backgroundColor: '#ffffff',
+                            fontSize: '0.75rem',
+                            color: '#4b5563',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.08)',
+                          }}
+                        >
+                          Edit
+                        </button>
+
                         {task.completed && (
                           <div
                             style={{
                               position: 'absolute',
-                              top: '8px',
+                              top: '34px',
                               right: '10px',
                               fontSize: '0.75rem',
                               color: '#166534',

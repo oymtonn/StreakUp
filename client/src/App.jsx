@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import Dashboard from './pages/Dashboard.jsx';
 import CreateHabit from './pages/CreateHabit.jsx'
+import EditHabit from './pages/EditHabit.jsx'
 import { useRoutes } from 'react-router-dom'
 
 function App() {
@@ -15,8 +16,8 @@ function App() {
             element: <CreateHabit/>
           },
           {
-            path:'/createtask',
-            element: <Dashboard />
+            path:'/habits/edit/:id',
+            element: <EditHabit/>
           },
       ])
     

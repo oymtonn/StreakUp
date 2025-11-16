@@ -16,7 +16,7 @@ export const getHabits = async (req, res) => {
 
 export const getHabitById = async (req, res) => {
     let results;
-    const { id } = req.params.id;
+    const { id } = req.params;
 
     try {
         results = await pool.query(
@@ -48,13 +48,13 @@ export const createHabit = async (req, res) => {
 }
 
 export const editHabit = async (req, res) => {
-    const { id } = req.params.id;
+    const { id } = req.params;
     const { user_id, title, priority, tag, streak, last_completed_date } = req.body;
 
     try {
         const results = await pool.query(
             `
-            UPDATE habits SET user_id = $1, title = $2, priority = $3, tag = $4, streak = $5, last_completed_date = $6 WHERE id = $7
+            UPDATE habits SET user_id = $1, title = $2, priority = $3, tag = $4, streak = $5, last_completed_date = $6 WHERE id = $7 RETURNING *
             `, [user_id, title, priority, tag, streak, last_completed_date, id]
         );
         res.status(200).json(results.rows[0]);
@@ -66,7 +66,7 @@ export const editHabit = async (req, res) => {
 }
 
 export const deleteHabit = async (req, res) => {
-    const { id } = req.params.id;
+    const { id } = req.params;
     try {
         const results = await pool.query(`DELETE FROM habits WHERE id = $1`, [id])
         res.status(200).json(results.rows[0]);
