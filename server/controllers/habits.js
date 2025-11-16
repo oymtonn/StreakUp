@@ -35,7 +35,7 @@ export const createHabit = async (req, res) => {
 
     try {
         const results = await pool.query(
-            `INSERT INTO tasks (user_id, title, priority, tag, streak, last_completed date) 
+            `INSERT INTO habits (user_id, title, priority, tag, streak, last_completed_date) 
              VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
             [user_id, title, priority, tag, streak, last_completed_date]
         );
