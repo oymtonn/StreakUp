@@ -1,0 +1,108 @@
+.login-container {
+    background-color: #f9fafb;
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.login-form-group {
+    margin-bottom: 20px;
+}
+
+.login-form-group:last-of-type {
+    margin-bottom: 25px;
+}
+
+.login-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.login-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.9rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.login-input:focus {
+    border-color: #4b5563;
+}
+
+.login-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background-color: #1f2937;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.login-button:hover {
+    background-color: #374151;
+}
+
+.github-login,
+.github-signup {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    background-color: #fff;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.github-login:hover,
+.github-signup:hover {
+    background-color: #f3f4f6;
+}
+
+.login-footer {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-link {
+    color: #1f2937;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}

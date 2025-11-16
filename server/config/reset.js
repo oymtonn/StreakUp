@@ -5,6 +5,19 @@ import taskData from '../data/taskData.js';
 const createTables = async () => {
 
     try {
+        await pool.query(`DROP TABLE IF EXISTS users`);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                github_id VARCHAR(255) UNIQUE,
+                username VARCHAR(255),
+                email VARCHAR(255),
+                avatar_url TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
         await pool.query(`DROP TABLE IF EXISTS habits`);
 
         await pool.query(`
