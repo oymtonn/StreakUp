@@ -3,7 +3,7 @@ import logo from '../assets/logo.png'
 import settings from '../assets/setting.png'
 import dashboard from '../assets/dashboard.png'
 import habit from '../assets/sync.png'
-import task from '../assets/clipboard.png' 
+import task from '../assets/clipboard.png'
 
 const Sidemenu = () => {
     const [activeTab, setActiveTab] = useState('dashboard');
@@ -31,8 +31,8 @@ const Sidemenu = () => {
             }}
         >
             <div style={{ marginBottom: '40px' }}>
-  <img src={logo} alt="Logo" style={{ width: '120px', height: 'auto' }} />
-</div>
+                <img src={logo} alt="Logo" style={{ width: '120px', height: 'auto' }} />
+            </div>
 
 
 
@@ -68,7 +68,7 @@ const Sidemenu = () => {
                             }
                         }}
                     >
-                        <img src={item.icon} alt="icon" style={{ width: '30px', height: 'auto' }}/>
+                        <img src={item.icon} alt="icon" style={{ width: '30px', height: 'auto' }} />
                         <span>{item.label}</span>
                     </button>
                 ))}
