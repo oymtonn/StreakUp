@@ -9,6 +9,14 @@ function App() {
           path:'/dashboard',
           element: <Dashboard />
         },
+        {
+            path:'/createhabit',
+            element: <Dashboard />
+          },
+          {
+            path:'/createtask',
+            element: <Dashboard />
+          },
       ])
     
       return (

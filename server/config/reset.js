@@ -14,7 +14,6 @@ const createTables = async () => {
                 title VARCHAR(255) NOT NULL,
                 priority VARCHAR(10) NOT NULL,
                 tag VARCHAR(10),
-                frequency VARCHAR(10) NOT NULL,
                 streak VARCHAR(10) NOT NULL,
                 last_completed_date DATE NOT NULL
             )
