@@ -10,8 +10,8 @@ const Sidemenu = () => {
 
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: dashboard },
-        { id: 'habits', label: 'Habits', icon: habit },
-        { id: 'tasks', label: 'Tasks', icon: task },
+        { id: 'habits', label: 'Create Habit', icon: habit },
+        { id: 'tasks', label: 'Create Task', icon: task },
         { id: 'settings', label: 'Settings', icon: settings },
     ];
 

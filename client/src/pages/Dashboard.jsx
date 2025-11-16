@@ -151,7 +151,6 @@ const Dashboard = () => {
                         </span>
                       </div>
                       <div style={{ fontSize: "0.8rem", color: "#6b7280", lineHeight: "1.4" }}>
-                        <div><strong>Frequency:</strong> {habit.frequency}</div>
                         <div><strong>Streak:</strong> {habit.streak} days</div>
                         <div><strong>Last Completed:</strong> {new Date(habit.last_completed_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
                       </div>
