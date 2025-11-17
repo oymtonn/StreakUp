@@ -52,8 +52,12 @@ function App() {
       element: <ProtectedRoute><Dashboard /></ProtectedRoute>
     },
     {
-      path: '/createhabit',
-      element: <ProtectedRoute><Dashboard /></ProtectedRoute>
+      path:'/habits/create',
+      element: <ProtectedRoute><CreateHabit/></ProtectedRoute>
+    },
+    {
+      path:'/habits/edit/:id',
+      element: <ProtectedRoute><EditHabit/></ProtectedRoute>
     },
     {
       path: '/createtask',
