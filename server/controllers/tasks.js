@@ -4,7 +4,15 @@ export const getTasks = async (req, res) => {
     let results;
 
     try {
-        results = await pool.query(`SELECT * FROM tasks ORDER BY id ASC`);
+        // If user is authenticated, filter by user_id
+        if (req.user && req.user.id) {
+            results = await pool.query(
+                `SELECT * FROM tasks WHERE user_id = $1 ORDER BY id ASC`,
+                [req.user.id]
+            );
+        } else {
+            results = await pool.query(`SELECT * FROM tasks ORDER BY id ASC`);
+        }
         res.status(200).json(results.rows);
     }
     catch (err) {
@@ -18,7 +26,20 @@ export const getTaskById = async (req, res) => {
     let result;
 
     try {
-        result = await pool.query(`SELECT * FROM tasks WHERE id = $1`, [id])
+        // If user is authenticated, ensure they own this task
+        if (req.user && req.user.id) {
+            result = await pool.query(
+                `SELECT * FROM tasks WHERE id = $1 AND user_id = $2`,
+                [id, req.user.id]
+            );
+        } else {
+            result = await pool.query(`SELECT * FROM tasks WHERE id = $1`, [id]);
+        }
+        
+        if (!result.rows[0]) {
+            return res.status(404).json({ error: 'Task not found' });
+        }
+        
         res.status(200).json(result.rows[0])
     }
     catch (err) {
@@ -28,7 +49,10 @@ export const getTaskById = async (req, res) => {
 }
 
 export const createTask = async (req, res) => {
-    const { user_id, title, priority, tag, completed, progress, due_date } = req.body;
+    const { title, priority, tag, completed, progress, due_date } = req.body;
+    
+    // Use authenticated user's ID
+    const user_id = req.user ? req.user.id : req.body.user_id;
 
     try {
         const result = await pool.query(
@@ -48,10 +72,19 @@ export const deleteTask = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const result = await pool.query(`DELETE FROM tasks WHERE id = $1 RETURNING *`, [id]);
+        // If user is authenticated, ensure they own this task
+        let result;
+        if (req.user && req.user.id) {
+            result = await pool.query(
+                `DELETE FROM tasks WHERE id = $1 AND user_id = $2 RETURNING *`,
+                [id, req.user.id]
+            );
+        } else {
+            result = await pool.query(`DELETE FROM tasks WHERE id = $1 RETURNING *`, [id]);
+        }
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Task not found' });
+            return res.status(404).json({ error: 'Task not found or unauthorized' });
         }
 
         res.status(200).json({ message: 'Task deleted successfully', task: result.rows[0] });
@@ -64,18 +97,29 @@ export const deleteTask = async (req, res) => {
 
 export const modifyTask = async (req, res) => {
     const { id } = req.params;
-    const { user_id, title, priority, tag, completed, progress, due_date } = req.body;
+    const { title, priority, tag, completed, progress, due_date } = req.body;
 
     try {
-        const result = await pool.query(
-            `UPDATE tasks 
-             SET user_id = $1, title = $2, priority = $3, tag = $4, completed = $5, progress = $6, due_date = $7 
-             WHERE id = $8 RETURNING *`,
-            [user_id, title, priority, tag, completed, progress, due_date, id]
-        );
+        // If user is authenticated, ensure they own this task
+        let result;
+        if (req.user && req.user.id) {
+            result = await pool.query(
+                `UPDATE tasks 
+                 SET title = $1, priority = $2, tag = $3, completed = $4, progress = $5, due_date = $6 
+                 WHERE id = $7 AND user_id = $8 RETURNING *`,
+                [title, priority, tag, completed, progress, due_date, id, req.user.id]
+            );
+        } else {
+            result = await pool.query(
+                `UPDATE tasks 
+                 SET title = $1, priority = $2, tag = $3, completed = $4, progress = $5, due_date = $6 
+                 WHERE id = $7 RETURNING *`,
+                [title, priority, tag, completed, progress, due_date, id]
+            );
+        }
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Task not found' });
+            return res.status(404).json({ error: 'Task not found or unauthorized' });
         }
 
         res.status(200).json(result.rows[0]);

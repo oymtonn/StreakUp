@@ -2,66 +2,71 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Sidemenu from "../components/Sidemenu";
 
-const EditHabit = () => {
+const EditTask = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [habit, setHabit] = useState(null);
+  const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const getHabitById = async () => {
+    const getTaskById = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/habits/${id}`, {
+        const response = await fetch(`http://localhost:3001/tasks/${id}`, {
           credentials: 'include'
         });
         if (!response.ok) {
-          throw new Error("Failed to fetch habit");
+          throw new Error("Failed to fetch task");
         }
         const data = await response.json();
-        setHabit(data);
+        // Format date for input
+        if (data.due_date) {
+          data.due_date = new Date(data.due_date).toISOString().split('T')[0];
+        }
+        setTask(data);
       } catch (err) {
         console.error(err);
-        setError("Could not load this habit. Please try again.");
+        setError("Could not load this task. Please try again.");
       } finally {
         setLoading(false);
       }
     };
 
-    getHabitById();
+    getTaskById();
   }, [id]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setHabit((prev) => ({
+    const { name, value, type, checked } = e.target;
+    setTask((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!habit) return;
+    if (!task) return;
 
     setError("");
 
     try {
-      const response = await fetch(`http://localhost:3001/habits/${id}`, {
+      const response = await fetch(`http://localhost:3001/tasks/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(habit),
+        body: JSON.stringify(task),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update habit");
+        throw new Error("Failed to update task");
       }
 
       const updated = await response.json();
-      console.log("Habit updated:", updated);
+      console.log("Task updated:", updated);
       navigate("/dashboard");
     } catch (err) {
       console.error(err);
+      setError("Failed to update task. Please try again.");
     }
   };
 
@@ -72,17 +77,15 @@ const EditHabit = () => {
   const handleDelete = async (event) => {
     event.preventDefault();
     try {
-        await fetch(`http://localhost:3001/habits/${id}`, {
-            method: "DELETE",
-            credentials: 'include'
-        });
-        navigate("/dashboard");
+      await fetch(`http://localhost:3001/tasks/${id}`, {
+        method: "DELETE",
+        credentials: 'include'
+      });
+      navigate("/dashboard");
+    } catch (err) {
+      console.log('error deleting task');
     }
-    catch (err) {
-        console.log('error deleting habit');
-    }
-
-  }
+  };
 
   return (
     <div style={{ display: "flex", fontFamily: "Poppins, system-ui, sans-serif" }}>
@@ -101,7 +104,6 @@ const EditHabit = () => {
         }}
       >
         <div style={{ maxWidth: "720px", margin: "0 auto" }}>
-          {/* Heading */}
           <div
             style={{
               textAlign: "center",
@@ -116,7 +118,7 @@ const EditHabit = () => {
                 fontWeight: "700",
               }}
             >
-              Edit Habit
+              Edit Task
             </h1>
             <p
               style={{
@@ -125,7 +127,7 @@ const EditHabit = () => {
                 margin: 0,
               }}
             >
-              Update the details to keep this habit aligned with your current goals.
+              Update the details to keep this task aligned with your current goals.
             </p>
             <div
               style={{
@@ -149,11 +151,10 @@ const EditHabit = () => {
                   backgroundColor: "#1d4ed8",
                 }}
               />
-              Habit #{id}
+              Task #{id}
             </div>
           </div>
 
-          {/* Card */}
           <div
             style={{
               backgroundColor: "rgba(255,255,255,0.95)",
@@ -172,7 +173,7 @@ const EditHabit = () => {
                   color: "#6b7280",
                 }}
               >
-                Loading habit details...
+                Loading task details...
               </p>
             ) : error ? (
               <p
@@ -187,14 +188,14 @@ const EditHabit = () => {
               >
                 {error}
               </p>
-            ) : !habit ? (
+            ) : !task ? (
               <p
                 style={{
                   fontSize: "0.9rem",
                   color: "#6b7280",
                 }}
               >
-                Habit not found.
+                Task not found.
               </p>
             ) : (
               <>
@@ -205,7 +206,7 @@ const EditHabit = () => {
                     marginBottom: "18px",
                   }}
                 >
-                  Make small adjustments—name, priority, or tag—without breaking your streak.
+                  Make adjustments to keep your task up to date with your progress.
                 </p>
 
                 <form
@@ -216,7 +217,6 @@ const EditHabit = () => {
                     gap: "18px",
                   }}
                 >
-                  {/* Habit Title */}
                   <div>
                     <label
                       htmlFor="title"
@@ -228,14 +228,14 @@ const EditHabit = () => {
                         fontWeight: "600",
                       }}
                     >
-                      Habit Title
+                      Task Title
                     </label>
                     <input
                       id="title"
                       name="title"
-                      value={habit.title || ""}
+                      value={task.title || ""}
                       onChange={handleChange}
-                      placeholder="e.g. Morning walk, Read 20 minutes"
+                      placeholder="e.g. Complete project report"
                       style={{
                         width: "80%",
                         padding: "10px 12px",
@@ -256,7 +256,6 @@ const EditHabit = () => {
                       gap: "16px",
                     }}
                   >
-                    {/* Priority */}
                     <div>
                       <label
                         htmlFor="priority"
@@ -273,7 +272,7 @@ const EditHabit = () => {
                       <input
                         id="priority"
                         name="priority"
-                        value={habit.priority || ""}
+                        value={task.priority || ""}
                         onChange={handleChange}
                         placeholder="High, Medium, or Low"
                         style={{
@@ -289,7 +288,6 @@ const EditHabit = () => {
                       />
                     </div>
 
-                    {/* Tag */}
                     <div>
                       <label
                         htmlFor="tag"
@@ -306,9 +304,9 @@ const EditHabit = () => {
                       <input
                         id="tag"
                         name="tag"
-                        value={habit.tag || ""}
+                        value={task.tag || ""}
                         onChange={handleChange}
-                        placeholder="e.g. Health, Personal, Work"
+                        placeholder="e.g. Work, Personal"
                         style={{
                           width: "80%",
                           padding: "10px 12px",
@@ -323,123 +321,191 @@ const EditHabit = () => {
                     </div>
                   </div>
 
-                  
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "16px",
+                    }}
+                  >
+                    <div>
+                      <label
+                        htmlFor="progress"
+                        style={{
+                          display: "block",
+                          fontSize: "0.9rem",
+                          color: "#4b5563",
+                          marginBottom: "4px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        Progress (%)
+                      </label>
+                      <input
+                        id="progress"
+                        name="progress"
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={task.progress || 0}
+                        onChange={handleChange}
+                        style={{
+                          width: "80%",
+                          padding: "10px 12px",
+                          borderRadius: "10px",
+                          border: "1px solid #d1d5db",
+                          fontSize: "0.9rem",
+                          outline: "none",
+                          backgroundColor: "#f9fafb",
+                          color: "#111827",
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="due_date"
+                        style={{
+                          display: "block",
+                          fontSize: "0.9rem",
+                          color: "#4b5563",
+                          marginBottom: "4px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        Due Date
+                      </label>
+                      <input
+                        id="due_date"
+                        name="due_date"
+                        type="date"
+                        value={task.due_date || ""}
+                        onChange={handleChange}
+                        style={{
+                          width: "80%",
+                          padding: "10px 12px",
+                          borderRadius: "10px",
+                          border: "1px solid #d1d5db",
+                          fontSize: "0.9rem",
+                          outline: "none",
+                          backgroundColor: "#f9fafb",
+                          color: "#111827",
+                        }}
+                      />
+                    </div>
+                  </div>
+
                   <div
                     style={{
                       display: "flex",
-                      gap: "12px",
-                      flexWrap: "wrap",
-                      marginTop: "4px",
-                      fontSize: "0.8rem",
-                      color: "#6b7280",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "10px 12px",
+                      borderRadius: "10px",
+                      backgroundColor: "#f9fafb",
+                      border: "1px solid #d1d5db",
                     }}
                   >
-                    <span
+                    <input
+                      id="completed"
+                      name="completed"
+                      type="checkbox"
+                      checked={task.completed || false}
+                      onChange={handleChange}
                       style={{
-                        padding: "4px 10px",
-                        borderRadius: "999px",
-                        backgroundColor: "#f3f4f6",
+                        width: "18px",
+                        height: "18px",
+                        cursor: "pointer",
+                      }}
+                    />
+                    <label
+                      htmlFor="completed"
+                      style={{
+                        fontSize: "0.9rem",
+                        color: "#4b5563",
+                        fontWeight: "600",
+                        cursor: "pointer",
                       }}
                     >
-                      Current streak:{" "}
-                      <strong>{habit.streak ?? "0"} days</strong>
-                    </span>
-                    {habit.last_completed_date && (
-                      <span
-                        style={{
-                          padding: "4px 10px",
-                          borderRadius: "999px",
-                          backgroundColor: "#f3f4f6",
-                        }}
-                      >
-                        Last completed:{" "}
-                        <strong>
-                          {new Date(habit.last_completed_date).toLocaleDateString(
-                            "en-US",
-                            { month: "short", day: "numeric", year: "numeric" }
-                          )}
-                        </strong>
-                      </span>
-                    )}
+                      Mark as completed
+                    </label>
                   </div>
 
-                  {/* Buttons */}
-                    <div
+                  <div
                     style={{
-                        display: "flex",
-                        justifyContent: "space-between", 
-                        alignItems: "center",
-                        gap: "10px",
-                        marginTop: "18px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "10px",
+                      marginTop: "18px",
                     }}
-                    >
+                  >
                     <button
-                        type="button"
-                        onClick={handleDelete}
-                        style={{
+                      type="button"
+                      onClick={handleDelete}
+                      style={{
                         padding: "10px 16px",
                         borderRadius: "999px",
                         border: "1px solid #d1d5db",
                         backgroundColor: "#ffffff",
-                        color: "#FF474D",         // subtle red text
+                        color: "#FF474D",
                         fontWeight: "600",
                         cursor: "pointer",
                         fontSize: "0.9rem",
-                        }}
-                        onMouseEnter={(e) => {
+                      }}
+                      onMouseEnter={(e) => {
                         e.currentTarget.style.backgroundColor = "#fef2f2";
-                        }}
-                        onMouseLeave={(e) => {
+                      }}
+                      onMouseLeave={(e) => {
                         e.currentTarget.style.backgroundColor = "#ffffff";
-                        }}
+                      }}
                     >
-                        Delete Habit
+                      Delete Task
                     </button>
 
                     <div style={{ display: "flex", gap: "10px" }}>
-                        <button
+                      <button
                         type="button"
                         onClick={handleCancel}
                         style={{
-                            padding: "10px 16px",
-                            borderRadius: "999px",
-                            border: "1px solid #d1d5db",
-                            backgroundColor: "#ffffff",
-                            color: "#4b5563",
-                            fontWeight: "600",
-                            cursor: "pointer",
-                            fontSize: "0.9rem",
+                          padding: "10px 16px",
+                          borderRadius: "999px",
+                          border: "1px solid #d1d5db",
+                          backgroundColor: "#ffffff",
+                          color: "#4b5563",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          fontSize: "0.9rem",
                         }}
-                        >
+                      >
                         Cancel
-                        </button>
+                      </button>
 
-                        <button
+                      <button
                         type="submit"
                         style={{
-                            padding: "10px 16px",
-                            borderRadius: "999px",
-                            border: "none",
-                            backgroundColor: "#4b5563",
-                            color: "white",
-                            fontWeight: "600",
-                            cursor: "pointer",
-                            fontSize: "0.9rem",
-                            boxShadow: "0 1px 4px rgba(0,0,0,0.15)",
-                            transition: "background-color 0.15s ease",
+                          padding: "10px 16px",
+                          borderRadius: "999px",
+                          border: "none",
+                          backgroundColor: "#4b5563",
+                          color: "white",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          fontSize: "0.9rem",
+                          boxShadow: "0 1px 4px rgba(0,0,0,0.15)",
+                          transition: "background-color 0.15s ease",
                         }}
                         onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = "#374151";
+                          e.currentTarget.style.backgroundColor = "#374151";
                         }}
                         onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = "#4b5563";
+                          e.currentTarget.style.backgroundColor = "#4b5563";
                         }}
-                        >
+                      >
                         Save Changes
-                        </button>
+                      </button>
                     </div>
-                    </div>
-
+                  </div>
                 </form>
               </>
             )}
@@ -450,4 +516,4 @@ const EditHabit = () => {
   );
 };
 
-export default EditHabit;
+export default EditTask;

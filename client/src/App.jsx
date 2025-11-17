@@ -2,7 +2,8 @@ import './App.css'
 import Dashboard from './pages/Dashboard.jsx';
 import CreateHabit from './pages/CreateHabit.jsx'
 import EditHabit from './pages/EditHabit.jsx'
-import { useRoutes } from 'react-router-dom'
+import CreateTask from './pages/CreateTask.jsx'
+import EditTask from './pages/EditTask.jsx'
 import { useRoutes, Navigate } from 'react-router-dom'
 import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
@@ -60,8 +61,12 @@ function App() {
       element: <ProtectedRoute><EditHabit/></ProtectedRoute>
     },
     {
-      path: '/createtask',
-      element: <ProtectedRoute><Dashboard /></ProtectedRoute>
+      path: '/tasks/create',
+      element: <ProtectedRoute><CreateTask /></ProtectedRoute>
+    },
+    {
+      path: '/tasks/edit/:id',
+      element: <ProtectedRoute><EditTask /></ProtectedRoute>
     },
     {
       path: '/login',
