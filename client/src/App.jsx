@@ -1,5 +1,8 @@
 import './App.css'
 import Dashboard from './pages/Dashboard.jsx';
+import CreateHabit from './pages/CreateHabit.jsx'
+import EditHabit from './pages/EditHabit.jsx'
+import { useRoutes } from 'react-router-dom'
 import { useRoutes, Navigate } from 'react-router-dom'
 import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
