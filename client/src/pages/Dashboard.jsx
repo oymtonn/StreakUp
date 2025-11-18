@@ -76,6 +76,10 @@ const Dashboard = () => {
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((t) => t.completed).length;
 
+  const handleHabitClick = (id) => {
+    navigate(`/habits/detail/${id}`);
+  };
+
   return (
     <div style={{ display: 'flex', fontFamily: 'Poppins, system-ui, sans-serif' }}>
       <Sidemenu />
@@ -265,9 +269,9 @@ const Dashboard = () => {
                 >
                   {habits.map((habit) => (
                     <div
-                      key={habit.id}
-                      style={{
-                        position: 'relative', // Edit chip anchor
+                        key={habit.id}
+                        style={{
+                        position: 'relative',
                         background: 'linear-gradient(135deg,#f9fafb,#f3f4f6)',
                         border: '1px solid #e5e7eb',
                         borderRadius: '12px',
@@ -277,20 +281,20 @@ const Dashboard = () => {
                         display: 'flex',
                         justifyContent: 'space-between',
                         gap: '12px',
-                      }}
-                      onMouseEnter={(e) => {
+                        }}
+                        onClick={() => handleHabitClick(habit.id)}
+                        onMouseEnter={(e) => {
                         e.currentTarget.style.transform = 'translateY(-1px)';
-                        e.currentTarget.style.boxShadow =
-                          '0 10px 25px rgba(15,23,42,0.08)';
+                        e.currentTarget.style.boxShadow = '0 10px 25px rgba(15,23,42,0.08)';
                         e.currentTarget.style.background =
-                          'linear-gradient(135deg,#f3f4f6,#e5e7eb)';
-                      }}
-                      onMouseLeave={(e) => {
+                            'linear-gradient(135deg,#f3f4f6,#e5e7eb)';
+                        }}
+                        onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'translateY(0)';
                         e.currentTarget.style.boxShadow = 'none';
                         e.currentTarget.style.background =
-                          'linear-gradient(135deg,#f9fafb,#f3f4f6)';
-                      }}
+                            'linear-gradient(135deg,#f9fafb,#f3f4f6)';
+                        }}
                     >
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <h3

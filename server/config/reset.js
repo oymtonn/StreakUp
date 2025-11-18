@@ -44,10 +44,9 @@ const createTables = async () => {
 const seedHabitTable = async () => {
     for (const habit of habitData) {
         await pool.query(
-            `INSERT INTO habits (id, user_id, title, priority, tag, streak, last_completed_date)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+            `INSERT INTO habits (user_id, title, priority, tag, streak, last_completed_date)
+             VALUES ($1, $2, $3, $4, $5, $6)`,
              [
-                habit.id,
                 habit.user_id,
                 habit.title,
                 habit.priority,
@@ -63,9 +62,10 @@ const seedHabitTable = async () => {
 const seedTaskTable = async () => {
     for (const task of taskData) {
         await pool.query(
-            `INSERT INTO tasks (user_id, title, priority, tag, completed, progress, due_date)
+            `INSERT INTO tasks (id, user_id, title, priority, tag, completed, progress, due_date)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
              [
+                task.id,
                 task.user_id,
                 task.title,
                 task.priority,

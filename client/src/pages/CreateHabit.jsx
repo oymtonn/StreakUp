@@ -31,6 +31,8 @@ const CreateHabit = () => {
       const data = await response.json();
       console.log('Habit created:', data);
 
+      window.location = "/dashboard";
+
     } catch (err) {
       console.log('Error creating habit', err);
     }
