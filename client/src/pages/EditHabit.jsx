@@ -13,7 +13,9 @@ const EditHabit = () => {
   useEffect(() => {
     const getHabitById = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/habits/${id}`);
+        const response = await fetch(`http://localhost:3001/habits/${id}`, {
+          credentials: 'include'
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch habit");
         }
@@ -71,7 +73,8 @@ const EditHabit = () => {
     event.preventDefault();
     try {
         await fetch(`http://localhost:3001/habits/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            credentials: 'include'
         });
         navigate("/dashboard");
     }

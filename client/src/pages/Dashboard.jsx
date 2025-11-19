@@ -11,7 +11,9 @@ const Dashboard = () => {
   useEffect(() => {
     const getHabits = async () => {
       try {
-        const res = await fetch('http://localhost:3001/habits');
+        const res = await fetch('http://localhost:3001/habits', {
+          credentials: 'include'
+        });
         const data = await res.json();
         setHabits(data);
       } catch (err) {
@@ -25,7 +27,9 @@ const Dashboard = () => {
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const res = await fetch('http://localhost:3001/tasks');
+        const res = await fetch('http://localhost:3001/tasks', {
+          credentials: 'include'
+        });
         const data = await res.json();
         setTasks(data);
       } catch (err) {
@@ -89,6 +93,7 @@ const Dashboard = () => {
           flex: 1,
           marginLeft: '250px',
           minHeight: '100vh',
+          minWidth: '100%',
           background:
             'linear-gradient(135deg, #f9fafb 0%, #e5e7eb 40%, #f9fafb 100%)',
           padding: '24px 32px',
@@ -644,8 +649,7 @@ const Dashboard = () => {
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            console.log('Edit task', task.id);
-                            // later: navigate(`/tasks/${task.id}/edit`);
+                            navigate(`/tasks/edit/${task.id}`);
                           }}
                           style={{
                             position: 'absolute',

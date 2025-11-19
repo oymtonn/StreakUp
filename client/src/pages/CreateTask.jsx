@@ -1,19 +1,21 @@
 import { useState } from 'react';
 import Sidemenu from '../components/Sidemenu';
 
-const CreateHabit = () => {
-  const [habit, setHabit] = useState({
+const CreateTask = () => {
+  const [task, setTask] = useState({
     title: "",
     priority: "",
     tag: "",
-    streak: "0",
-    last_completed_date: null
+    completed: false,
+    progress: 0,
+    due_date: ""
   });
 
   const handleChange = (e) => {
-    setHabit({
-      ...habit,
-      [e.target.name]: e.target.value,
+    const { name, value, type, checked } = e.target;
+    setTask({
+      ...task,
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
@@ -21,20 +23,18 @@ const CreateHabit = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3001/habits', {
+      const response = await fetch('http://localhost:3001/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify(habit),
+        body: JSON.stringify(task),
       });
 
       const data = await response.json();
-      console.log('Habit created:', data);
-
+      console.log('Task created:', data);
       window.location = "/dashboard";
-
     } catch (err) {
-      console.log('Error creating habit', err);
+      console.log('Error creating task', err);
     }
   };
 
@@ -55,7 +55,6 @@ const CreateHabit = () => {
         }}
       >
         <div style={{ maxWidth: "650px", margin: "0 auto" }}>
-          {/* Heading */}
           <div
             style={{
               textAlign: "center",
@@ -70,7 +69,7 @@ const CreateHabit = () => {
                 fontWeight: "700",
               }}
             >
-              Create New Habit
+              Create New Task
             </h1>
             <p
               style={{
@@ -79,11 +78,10 @@ const CreateHabit = () => {
                 margin: 0,
               }}
             >
-              Set up a habit to track your consistency and momentum.
+              Add a task to track your progress and stay organized.
             </p>
           </div>
 
-          {/* Card */}
           <div
             style={{
               backgroundColor: "rgba(255,255,255,0.95)",
@@ -101,7 +99,7 @@ const CreateHabit = () => {
                 marginBottom: "18px",
               }}
             >
-              Choose a clear, specific habit so it’s easy to stick with over time.
+              Define your task clearly with a deadline to stay on track.
             </p>
 
             <form
@@ -112,7 +110,6 @@ const CreateHabit = () => {
                 gap: "18px",
               }}
             >
-              {/* Habit Title */}
               <div>
                 <label
                   htmlFor="title"
@@ -124,14 +121,15 @@ const CreateHabit = () => {
                     fontWeight: "600",
                   }}
                 >
-                  Habit Title
+                  Task Title
                 </label>
                 <input
                   id="title"
                   name="title"
-                  value={habit.title}
+                  value={task.title}
                   onChange={handleChange}
-                  placeholder="e.g. Morning walk, Read 20 minutes"
+                  placeholder="e.g. Complete project report, Buy groceries"
+                  required
                   style={{
                     width: "80%",
                     padding: "10px 12px",
@@ -146,7 +144,6 @@ const CreateHabit = () => {
                 />
               </div>
 
-              {/* Priority + Tag */}
               <div
                 style={{
                   display: "grid",
@@ -154,7 +151,6 @@ const CreateHabit = () => {
                   gap: "16px",
                 }}
               >
-                {/* Priority */}
                 <div>
                   <label
                     htmlFor="priority"
@@ -171,7 +167,7 @@ const CreateHabit = () => {
                   <input
                     id="priority"
                     name="priority"
-                    value={habit.priority}
+                    value={task.priority}
                     onChange={handleChange}
                     placeholder="High, Medium, or Low"
                     style={{
@@ -188,7 +184,6 @@ const CreateHabit = () => {
                   />
                 </div>
 
-                {/* Tag */}
                 <div>
                   <label
                     htmlFor="tag"
@@ -205,9 +200,9 @@ const CreateHabit = () => {
                   <input
                     id="tag"
                     name="tag"
-                    value={habit.tag}
+                    value={task.tag}
                     onChange={handleChange}
-                    placeholder="e.g. Health, Personal, Work"
+                    placeholder="e.g. Work, Personal, Health"
                     style={{
                       width: "80%",
                       padding: "10px 12px",
@@ -223,7 +218,82 @@ const CreateHabit = () => {
                 </div>
               </div>
 
-              {/* Buttons */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                }}
+              >
+                <div>
+                  <label
+                    htmlFor="progress"
+                    style={{
+                      display: "block",
+                      fontSize: "0.9rem",
+                      color: "#4b5563",
+                      marginBottom: "4px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Progress (%)
+                  </label>
+                  <input
+                    id="progress"
+                    name="progress"
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={task.progress}
+                    onChange={handleChange}
+                    style={{
+                      width: "80%",
+                      padding: "10px 12px",
+                      borderRadius: "10px",
+                      border: "1px solid #d1d5db",
+                      fontSize: "0.9rem",
+                      outline: "none",
+                      backgroundColor: "#f9fafb",
+                      color: "#111827",
+                      caretColor: "#111827",
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="due_date"
+                    style={{
+                      display: "block",
+                      fontSize: "0.9rem",
+                      color: "#4b5563",
+                      marginBottom: "4px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Due Date
+                  </label>
+                  <input
+                    id="due_date"
+                    name="due_date"
+                    type="date"
+                    value={task.due_date}
+                    onChange={handleChange}
+                    style={{
+                      width: "80%",
+                      padding: "10px 12px",
+                      borderRadius: "10px",
+                      border: "1px solid #d1d5db",
+                      fontSize: "0.9rem",
+                      outline: "none",
+                      backgroundColor: "#f9fafb",
+                      color: "#111827",
+                      caretColor: "#111827",
+                    }}
+                  />
+                </div>
+              </div>
+
               <div
                 style={{
                   display: "flex",
@@ -269,16 +339,15 @@ const CreateHabit = () => {
                     e.currentTarget.style.backgroundColor = "#4b5563";
                   }}
                 >
-                  Create Habit
+                  Create Task
                 </button>
               </div>
             </form>
           </div>
-
         </div>
       </div>
     </div>
   );
 };
 
-export default CreateHabit;
+export default CreateTask;
