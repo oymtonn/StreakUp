@@ -38,12 +38,20 @@ function App() {
     {
       path: '/',
       element: loading ? (
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
           height: '100vh',
-          fontFamily: 'Poppins, sans-serif'
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#f9fafb',
+          fontFamily: 'Poppins, sans-serif',
+          fontSize: '1rem',
+          color: '#4b5563',
+          zIndex: 9999
         }}>
           Loading...
         </div>
@@ -54,20 +62,20 @@ function App() {
       element: <ProtectedRoute><Dashboard /></ProtectedRoute>
     },
     {
-      path:'/habits/create',
-      element: <ProtectedRoute><CreateHabit/></ProtectedRoute>
+      path: '/habits/create',
+      element: <ProtectedRoute><CreateHabit /></ProtectedRoute>
     },
     {
-      path:'/habits/edit/:id',
-      element: <ProtectedRoute><EditHabit/></ProtectedRoute>
+      path: '/habits/edit/:id',
+      element: <ProtectedRoute><EditHabit /></ProtectedRoute>
     },
     {
       path: '/tasks/create',
       element: <ProtectedRoute><CreateTask /></ProtectedRoute>
     },
     {
-      path:'/habits/detail/:id',
-      element: <ProtectedRoute><HabitDetail/></ProtectedRoute>
+      path: '/habits/detail/:id',
+      element: <ProtectedRoute><HabitDetail /></ProtectedRoute>
     },
     {
       path: '/tasks/edit/:id',
@@ -79,18 +87,26 @@ function App() {
     },
     {
       path: '/signup',
-      element: isAuthenticated ? <Navigate to="/dashboard" /> : <Signup/>
+      element: isAuthenticated ? <Navigate to="/dashboard" /> : <Signup />
     }
   ])
 
   if (loading) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
         height: '100vh',
-        fontFamily: 'Poppins, sans-serif'
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f9fafb',
+        fontFamily: 'Poppins, sans-serif',
+        fontSize: '1rem',
+        color: '#4b5563',
+        zIndex: 9999
       }}>
         Loading...
       </div>

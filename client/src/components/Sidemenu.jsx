@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from 'react';
 import logo from '../assets/logo.png';
 import settings from '../assets/setting.png';
 import dashboard from '../assets/dashboard.png';
@@ -8,12 +9,31 @@ import task from '../assets/clipboard.png';
 const Sidemenu = () => {
   const location = useLocation();
   const activeTab = location.pathname;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/auth/status', {
+          credentials: 'include'
+        });
+        const data = await response.json();
+        console.log('User data:', data);
+        if (data.authenticated && data.user) {
+          setUser(data.user);
+        }
+      } catch (err) {
+        console.error('Error fetching user:', err);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const menuItems = [
     { id: '/dashboard', label: 'Dashboard', icon: dashboard },
     { id: '/habits/create', label: 'Create Habit', icon: habit },
-    { id: '/tasks/create', label: 'Create Task', icon: task },
-    { id: '/settings', label: 'Settings', icon: settings },
+    { id: '/tasks/create', label: 'Create Task', icon: task }
   ];
 
   return (
@@ -176,31 +196,67 @@ const Sidemenu = () => {
             'linear-gradient(135deg, rgba(15,23,42,0.02), rgba(209,213,219,0.4))',
           border: '1px solid rgba(209,213,219,0.8)',
           display: 'flex',
-          flexDirection: 'column',
-          gap: '4px',
+          alignItems: 'center',
+          gap: '10px',
         }}
       >
-        <div
-          style={{
-            fontSize: '0.8rem',
-            color: '#4b5563',
-            fontWeight: 600,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <span>User</span>
+        {user?.avatar_url ? (
+          <img
+            src={user.avatar_url}
+            alt="User avatar"
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              border: '2px solid #e5e7eb',
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              backgroundColor: '#4b5563',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontWeight: '600',
+              fontSize: '0.9rem',
+            }}
+          >
+            {user?.username?.[0]?.toUpperCase() || 'U'}
+          </div>
+        )}
+        <div style={{ flex: 1, overflow: 'hidden' }}>
+          <div
+            style={{
+              fontSize: '0.8rem',
+              color: '#4b5563',
+              fontWeight: 600,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {user?.username || 'User'}
+          </div>
+          {user?.email && (
+            <p
+              style={{
+                fontSize: '0.74rem',
+                color: '#9ca3af',
+                margin: 0,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {user.email}
+            </p>
+          )}
         </div>
-        <p
-          style={{
-            fontSize: '0.74rem',
-            color: '#9ca3af',
-            margin: 0,
-          }}
-        >
-          user@example.com
-        </p>
       </div>
     </div>
   );

@@ -27,11 +27,19 @@ const ProtectedRoute = ({ children }) => {
   if (loading) {
     return (
       <div style={{ 
-        height: '100vh',
+        position: 'fixed',
+        top: 0,
+        left: 0,
         width: '100vw',
+        height: '100vh',
         display: 'flex', 
         justifyContent: 'center', 
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#f9fafb',
+        fontFamily: 'Poppins, sans-serif',
+        fontSize: '1rem',
+        color: '#4b5563',
+        zIndex: 9999
       }}>
         Loading...
       </div>
