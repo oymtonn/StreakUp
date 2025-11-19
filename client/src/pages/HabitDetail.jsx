@@ -1,9 +1,10 @@
 import SideMenu from '../components/Sidemenu.jsx';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const HabitDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [habit, setHabit] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -119,40 +120,22 @@ const HabitDetail = () => {
 
   if (loading) {
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          minWidth: '100vw',
-          display: 'flex',
-          backgroundColor: '#f1f5f9',
-          color: '#0f172a',
-        }}
-      >
+      <div style={{ display: 'flex', fontFamily: 'Poppins, system-ui, sans-serif' }}>
         <SideMenu />
         <div
           style={{
             flex: 1,
+            marginLeft: '250px',
+            minHeight: '100vh',
+            width: 'calc(100vw - 250px)',
+            background: 'linear-gradient(135deg, #f9fafb 0%, #e5e7eb 40%, #f9fafb 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '20px',
           }}
         >
-          <div style={{ textAlign: 'center' }}>
-            <div
-              style={{
-                height: '36px',
-                width: '36px',
-                borderRadius: '50%',
-                border: '3px solid rgba(148,163,184,0.3)',
-                borderTopColor: '#0ea5e9',
-                animation: 'spin 1s linear infinite',
-                margin: '0 auto 12px',
-              }}
-            ></div>
-            <p style={{ color: '#64748b', fontSize: '14px' }}>
-              Loading habit...
-            </p>
+          <div style={{ textAlign: 'center', color: '#4b5563' }}>
+            Loading habit...
           </div>
         </div>
       </div>
@@ -160,182 +143,190 @@ const HabitDetail = () => {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '90vh',
-        minWidth: '80vw',
-        marginLeft: '180px',
-        display: 'flex',
-        backgroundColor: '#f1f5f9',
-        color: '#0f172a'
-      }}
-    >
+    <div style={{ display: 'flex', fontFamily: 'Poppins, system-ui, sans-serif' }}>
       <SideMenu />
 
-      <main style={{ flex: 1, padding: '32px 48px' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+      <div
+        style={{
+          flex: 1,
+          marginLeft: '250px',
+          minHeight: '100vh',
+          width: 'calc(100vw - 250px)',
+          background: 'linear-gradient(135deg, #f9fafb 0%, #e5e7eb 40%, #f9fafb 100%)',
+          padding: '24px 32px',
+          boxSizing: 'border-box',
+        }}
+      >
+        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
           {/* Header */}
           <div
             style={{
-              marginBottom: '32px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              textAlign: 'center',
+              marginBottom: '20px',
             }}
           >
-            <div>
-              <p
+            <h1
+              style={{
+                color: '#1f2937',
+                marginBottom: '6px',
+                fontSize: '2rem',
+                fontWeight: '700',
+              }}
+            >
+              {habit.title}
+            </h1>
+            <p
+              style={{
+                fontSize: '0.9rem',
+                color: '#6b7280',
+                margin: 0,
+              }}
+            >
+              Track your consistency and build momentum
+            </p>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                marginTop: '10px',
+                padding: '4px 10px',
+                borderRadius: '999px',
+                fontSize: '0.75rem',
+                backgroundColor: 'rgba(191, 219, 254, 0.7)',
+                color: '#1d4ed8',
+                border: '1px solid rgba(96, 165, 250, 0.8)',
+              }}
+            >
+              <span
                 style={{
-                  fontSize: '11px',
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase',
-                  color: '#94a3b8',
-                  marginBottom: '6px',
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '999px',
+                  backgroundColor: '#1d4ed8',
                 }}
-              >
-                Habit Detail
-              </p>
-              <h1 style={{ fontSize: '32px', fontWeight: '600' }}>
-                {habit.title}
-              </h1>
-            </div>
-
-            <div style={{ display: 'flex', gap: '10px' }}>
-              {habit.tag && (
-                <span
-                  style={{
-                    backgroundColor: '#f8fafc',
-                    border: '1px solid #cbd5e1',
-                    padding: '6px 12px',
-                    borderRadius: '999px',
-                    fontSize: '12px',
-                  }}
-                >
-                  #{habit.tag}
-                </span>
-              )}
-              {habit.priority && (
-                <span
-                  style={{
-                    backgroundColor: '#e0f2fe',
-                    border: '1px solid #7dd3fc',
-                    padding: '6px 12px',
-                    borderRadius: '999px',
-                    fontSize: '12px',
-                    color: '#0369a1',
-                  }}
-                >
-                  Priority: {habit.priority}
-                </span>
-              )}
+              />
+              Habit #{id}
             </div>
           </div>
 
-          {/* Main layout: card + summary */}
+          {/* Main Card */}
           <div
             style={{
-              display: 'grid',
-              gap: '28px',
-              gridTemplateColumns: '2fr 1fr',
+              backgroundColor: 'rgba(255,255,255,0.95)',
+              borderRadius: '16px',
+              boxShadow: '0 18px 45px rgba(15,23,42,0.08)',
+              border: '1px solid rgba(148,163,184,0.25)',
+              padding: '24px 28px',
+              backdropFilter: 'blur(8px)',
             }}
           >
-            {/* Main Card */}
-            <div
-              style={{
-                backgroundColor: 'rgba(255,255,255,0.85)',
-                borderRadius: '18px',
-                padding: '24px 28px',
-                border: '1px solid rgba(148,163,184,0.25)',
-                boxShadow: '0 18px 45px rgba(15,23,42,0.06)',
-                backdropFilter: 'blur(8px)',
-              }}
-            >
-              <p style={{ color: '#64748b', fontSize: '13px', marginBottom: '6px' }}>
-                Habit ID #{habit.id}
-              </p>
 
-              <p
-                style={{
-                  fontSize: '14px',
-                  color: '#475569',
-                  marginBottom: '24px',
-                }}
-              >
-                Stay consistent with this habit to keep your streak alive.
-              </p>
-
-              {/* Streak */}
+            {/* Info Section */}
+            <div style={{ marginBottom: '20px' }}>
               <div
                 style={{
                   display: 'flex',
-                  gap: '18px',
-                  marginBottom: '22px',
+                  gap: '12px',
+                  flexWrap: 'wrap',
+                  fontSize: '0.8rem',
+                  color: '#6b7280',
+                  marginBottom: '16px',
                 }}
               >
-                <div
-                  style={{
-                    flex: 1,
-                    background:
-                      'linear-gradient(to bottom right, #f0f9ff, white, #ecfdf5)',
-                    padding: '20px',
-                    borderRadius: '16px',
-                    border: '1px solid #bae6fd',
-                  }}
-                >
-                  <p
+                {habit.tag && (
+                  <span
                     style={{
-                      fontSize: '11px',
-                      letterSpacing: '1px',
-                      textTransform: 'uppercase',
-                      color: '#0284c7',
-                      marginBottom: '8px',
+                      padding: '4px 10px',
+                      borderRadius: '999px',
+                      backgroundColor: '#f3f4f6',
                     }}
                   >
-                    Current Streak
-                  </p>
-
-                  <div style={{ display: 'flex', alignItems: 'baseline' }}>
-                    <span
-                      style={{
-                        fontSize: '44px',
-                        fontWeight: '600',
-                        color: '#0f172a',
-                      }}
-                    >
-                      {habit.streak || 0}
-                    </span>
-                    <span style={{ marginLeft: '6px', color: '#475569' }}>
-                      {habit.streak === 1 ? 'day' : 'days'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Last Completed */}
-                <div
-                  style={{
-                    flex: 1,
-                    backgroundColor: '#f8fafc',
-                    borderRadius: '16px',
-                    padding: '20px',
-                    border: '1px solid #cbd5e1',
-                  }}
-                >
-                  <p
+                    Tag: <strong>{habit.tag}</strong>
+                  </span>
+                )}
+                {habit.priority && (
+                  <span
                     style={{
-                      fontSize: '11px',
-                      letterSpacing: '1px',
-                      textTransform: 'uppercase',
-                      color: '#94a3b8',
-                      marginBottom: '8px',
+                      padding: '4px 10px',
+                      borderRadius: '999px',
+                      backgroundColor: '#f3f4f6',
                     }}
                   >
-                    Last Completed
-                  </p>
-                  <p style={{ fontSize: '15px', fontWeight: '500' }}>
-                    {formatDisplayDate(habit.last_completed_date)}
-                  </p>
+                    Priority: <strong>{habit.priority}</strong>
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Streak Section */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '16px',
+                marginBottom: '20px',
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: '#f9fafb',
+                  padding: '18px',
+                  borderRadius: '12px',
+                  border: '1px solid #e5e7eb',
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: '0.75rem',
+                    textTransform: 'uppercase',
+                    color: '#6b7280',
+                    marginBottom: '8px',
+                    fontWeight: '600',
+                  }}
+                >
+                  Current Streak
+                </p>
+                <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                  <span
+                    style={{
+                      fontSize: '2.5rem',
+                      fontWeight: '700',
+                      color: '#1f2937',
+                    }}
+                  >
+                    {habit.streak || 0}
+                  </span>
+                  <span style={{ marginLeft: '6px', color: '#6b7280', fontSize: '0.9rem' }}>
+                    {habit.streak === 1 ? 'day' : 'days'}
+                  </span>
                 </div>
               </div>
+
+              <div
+                style={{
+                  backgroundColor: '#f9fafb',
+                  borderRadius: '12px',
+                  padding: '18px',
+                  border: '1px solid #e5e7eb',
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: '0.75rem',
+                    textTransform: 'uppercase',
+                    color: '#6b7280',
+                    marginBottom: '8px',
+                    fontWeight: '600',
+                  }}
+                >
+                  Last Completed
+                </p>
+                <p style={{ fontSize: '0.95rem', fontWeight: '600', color: '#1f2937' }}>
+                  {formatDisplayDate(habit.last_completed_date)}
+                </p>
+              </div>
+            </div>
 
               {/* Today Status */}
               <div
@@ -369,55 +360,70 @@ const HabitDetail = () => {
                 </p>
               </div>
 
-              {/* Button */}
+            {/* Buttons */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: '10px',
+                marginTop: '18px',
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => navigate(`/habits/edit/${id}`)}
+                style={{
+                  padding: '10px 16px',
+                  borderRadius: '999px',
+                  border: '1px solid #d1d5db',
+                  backgroundColor: '#ffffff',
+                  color: '#4b5563',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f9fafb';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#ffffff';
+                }}
+              >
+                Edit Habit
+              </button>
+
               <button
                 onClick={handleStreak}
                 disabled={isCompletedToday}
                 style={{
-                  padding: '12px 18px',
-                  borderRadius: '12px',
-                  fontWeight: '500',
-                  fontSize: '14px',
+                  padding: '10px 16px',
+                  borderRadius: '999px',
+                  fontWeight: '600',
+                  fontSize: '0.9rem',
                   cursor: isCompletedToday ? 'not-allowed' : 'pointer',
-                  backgroundColor: isCompletedToday ? '#e2e8f0' : '#0ea5e9',
-                  color: isCompletedToday ? '#94a3b8' : 'white',
+                  backgroundColor: isCompletedToday ? '#e5e7eb' : '#4b5563',
+                  color: isCompletedToday ? '#9ca3af' : 'white',
                   border: 'none',
-                  transition: '0.2s',
+                  boxShadow: isCompletedToday ? 'none' : '0 1px 4px rgba(0,0,0,0.15)',
+                  transition: 'background-color 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isCompletedToday) {
+                    e.currentTarget.style.backgroundColor = '#374151';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isCompletedToday) {
+                    e.currentTarget.style.backgroundColor = '#4b5563';
+                  }
                 }}
               >
                 {isCompletedToday ? 'Already completed today' : 'Complete for today'}
               </button>
             </div>
-
-            {/* Right panel */}
-            <div
-              style={{
-                backgroundColor: 'rgba(255,255,255,0.85)',
-                borderRadius: '18px',
-                padding: '22px',
-                border: '1px solid rgba(148,163,184,0.25)',
-                boxShadow: '0 14px 38px rgba(15,23,42,0.04)',
-                backdropFilter: 'blur(8px)',
-              }}
-            >
-              <h3 style={{ fontSize: '15px', fontWeight: '600', marginBottom: '12px' }}>
-                Habit Overview
-              </h3>
-
-              <div style={{ fontSize: '14px', color: '#475569', lineHeight: '1.8' }}>
-                <p><strong>Title:</strong> {habit.title}</p>
-                <p><strong>Tag:</strong> {habit.tag || 'None'}</p>
-                <p><strong>Priority:</strong> {habit.priority}</p>
-                <p><strong>Streak:</strong> {habit.streak || 0} days</p>
-                <p>
-                  <strong>Last Completed:</strong>{' '}
-                  {formatDisplayDate(habit.last_completed_date)}
-                </p>
-              </div>
-            </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
