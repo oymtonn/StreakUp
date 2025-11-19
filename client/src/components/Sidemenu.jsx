@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from 'react';
+import { useUser } from '../context/UserContext';
 import logo from '../assets/logo.png';
 import settings from '../assets/setting.png';
 import dashboard from '../assets/dashboard.png';
@@ -9,26 +9,7 @@ import task from '../assets/clipboard.png';
 const Sidemenu = () => {
   const location = useLocation();
   const activeTab = location.pathname;
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/auth/status', {
-          credentials: 'include'
-        });
-        const data = await response.json();
-        console.log('User data:', data);
-        if (data.authenticated && data.user) {
-          setUser(data.user);
-        }
-      } catch (err) {
-        console.error('Error fetching user:', err);
-      }
-    };
-
-    fetchUser();
-  }, []);
+  const { user } = useUser();
 
   const menuItems = [
     { id: '/dashboard', label: 'Dashboard', icon: dashboard },
