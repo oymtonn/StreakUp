@@ -93,7 +93,7 @@ const Dashboard = () => {
           flex: 1,
           marginLeft: '250px',
           minHeight: '100vh',
-          minWidth: '100%',
+          width: 'calc(100vw - 250px)',
           background:
             'linear-gradient(135deg, #f9fafb 0%, #e5e7eb 40%, #f9fafb 100%)',
           padding: '24px 32px',

@@ -45,9 +45,9 @@ const CreateHabit = () => {
       <div
         style={{
           flex: 1,
-          marginLeft: '180px',
+          marginLeft: '250px',
           minHeight: "100vh",
-          minWidth: "80vw",
+          width: "calc(100vw - 250px)",
           background:
             "linear-gradient(135deg, #f9fafb 0%, #e5e7eb 40%, #f9fafb 100%)",
           padding: "24px 32px",
