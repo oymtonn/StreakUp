@@ -43,6 +43,8 @@ const createTables = async () => {
                 tag VARCHAR(10),
                 completed BOOLEAN NOT NULL DEFAULT FALSE,
                 progress INTEGER NOT NULL DEFAULT 0,
+                is_subtask BOOLEAN NOT NULL DEFAULT FALSE,
+                parent_task_id VARCHAR(10),
                 due_date TIMESTAMPTZ
             )
             `)
@@ -54,30 +56,29 @@ const createTables = async () => {
 
 }
 
-const seedHabitTable = async () => {
-    for (const habit of habitData) {
-        await pool.query(
-            `INSERT INTO habits (id, user_id, title, priority, tag, streak, last_completed_date)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-            [
-                habit.id,
-                habit.user_id,
-                habit.title,
-                habit.priority,
-                habit.tag,
-                habit.streak,
-                habit.last_completed_date
-            ]
-        );
-        console.log(`${habit.title} added`);
-    }
-}
+// const seedHabitTable = async () => {
+//     for (const habit of habitData) {
+//         await pool.query(
+//             `INSERT INTO habits (user_id, title, priority, tag, streak, last_completed_date)
+//              VALUES ($1, $2, $3, $4, $5, $6)`,
+//              [
+//                 habit.user_id,
+//                 habit.title,
+//                 habit.priority,
+//                 habit.tag,
+//                 habit.streak,
+//                 habit.last_completed_date
+//             ]
+//         );
+//         console.log(`${habit.title} added`);
+//     }
+// }
 
 // const seedTaskTable = async () => {
 //     for (const task of taskData) {
 //         await pool.query(
-//             `INSERT INTO tasks (user_id, title, priority, tag, completed, progress, due_date)
-//              VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+//             `INSERT INTO tasks (user_id, title, priority, tag, completed, progress, is_subtask, due_date)
+//              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
 //              [
 //                 task.user_id,
 //                 task.title,
@@ -85,6 +86,7 @@ const seedHabitTable = async () => {
 //                 task.tag,
 //                 task.completed,
 //                 task.progress,
+//                 task.is_Subtask,
 //                 task.due_date
 //              ]
 //             );
@@ -95,7 +97,7 @@ const seedHabitTable = async () => {
 
 const resetDatabase = async () => {
     await createTables();
-    await seedHabitTable();
+    // await seedHabitTable();
     // await seedTaskTable();
 
     console.log('Database reset');
