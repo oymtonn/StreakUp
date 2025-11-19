@@ -33,7 +33,7 @@ passport.use(
           return done(null, existingUser.rows[0]);
         }
 
-        
+
         const newUser = await pool.query(
           `INSERT INTO users (github_id, username, email, avatar_url) 
            VALUES ($1, $2, $3, $4) RETURNING *`,
