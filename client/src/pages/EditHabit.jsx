@@ -381,7 +381,7 @@ const EditHabit = () => {
                         borderRadius: "999px",
                         border: "1px solid #d1d5db",
                         backgroundColor: "#ffffff",
-                        color: "#FF474D",         // subtle red text
+                        color: "#FF474D",
                         fontWeight: "600",
                         cursor: "pointer",
                         fontSize: "0.9rem",
@@ -397,6 +397,29 @@ const EditHabit = () => {
                     </button>
 
                     <div style={{ display: "flex", gap: "10px" }}>
+                        <button
+                        type="button"
+                        onClick={() => navigate(`/habits/detail/${id}`)}
+                        style={{
+                            padding: "10px 16px",
+                            borderRadius: "999px",
+                            border: "1px solid #d1d5db",
+                            backgroundColor: "#ffffff",
+                            color: "#4b5563",
+                            fontWeight: "600",
+                            cursor: "pointer",
+                            fontSize: "0.9rem",
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = "#f9fafb";
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = "#ffffff";
+                        }}
+                        >
+                        View Details
+                        </button>
+
                         <button
                         type="button"
                         onClick={handleCancel}
