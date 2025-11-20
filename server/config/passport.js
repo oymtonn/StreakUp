@@ -20,7 +20,9 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3001/auth/github/callback',
+      // 🔴 PRODUCTION CALLBACK 
+      callbackURL: 'https://streakup-api.onrender.com/auth/github/callback',
+      // can still keep a DEV callback in env and switch based on NODE_ENV
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -32,7 +34,6 @@ passport.use(
         if (existingUser.rows.length > 0) {
           return done(null, existingUser.rows[0]);
         }
-
 
         const newUser = await pool.query(
           `INSERT INTO users (github_id, username, email, avatar_url) 

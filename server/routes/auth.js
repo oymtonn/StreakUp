@@ -3,14 +3,19 @@ import passport from '../config/passport.js';
 
 const router = express.Router();
 
-router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
+router.get(
+  '/github',
+  passport.authenticate('github', { scope: ['user:email'] })
+);
 
+// GitHub OAuth callback
 router.get(
   '/github/callback',
-  passport.authenticate('github', { failureRedirect: 'http://localhost:5173/login' }),
+  passport.authenticate('github', {
+    failureRedirect: 'https://streakup-client.onrender.com/login',
+  }),
   (req, res) => {
-
-    res.redirect('http://localhost:5173/dashboard');
+    res.redirect('https://streakup-client.onrender.com/dashboard');
   }
 );
 
@@ -19,7 +24,7 @@ router.get('/logout', (req, res) => {
     if (err) {
       return res.status(500).json({ error: 'Logout failed' });
     }
-    res.redirect('http://localhost:5173/login');
+    res.redirect('https://streakup-client.onrender.com/login');
   });
 });
 
