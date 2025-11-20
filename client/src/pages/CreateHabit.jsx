@@ -7,7 +7,8 @@ const CreateHabit = () => {
     priority: "",
     tag: "",
     streak: "0",
-    last_completed_date: null
+    last_completed_date: null,
+    user_id: 1
   });
 
   const handleChange = (e) => {

@@ -49,24 +49,51 @@ export const getHabitById = async (req, res) => {
 }
 
 export const createHabit = async (req, res) => {
-    const { title, priority, tag, streak, last_completed_date } = req.body;
-    
-    // Use authenticated user's ID
-    const user_id = req.user ? req.user.id : req.body.user_id;
+    const { title, priority, tag, streak, last_completed_date, user_id: bodyUserId } = req.body;
+
+    // Prefer authenticated user, fallback to explicit user_id in body
+    const user_id = req.user?.id ?? bodyUserId;
+
+    console.log('--- createHabit called ---');
+    console.log('req.user:', req.user);
+    console.log('req.body:', req.body);
+    console.log('computed user_id:', user_id);
+
+    if (!user_id) {
+        console.error('createHabit: missing user_id');
+        return res.status(400).json({ error: 'Missing user_id' });
+    }
 
     try {
-        const results = await pool.query(
-            `INSERT INTO habits (user_id, title, priority, tag, streak, last_completed_date) 
-             VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-            [user_id, title, priority, tag, streak, last_completed_date]
-        );
-        res.status(201).json(results.rows[0]);
+        const queryText = `
+            INSERT INTO habits (user_id, title, priority, tag, streak, last_completed_date) 
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *
+        `;
+        const queryParams = [user_id, title, priority, tag, streak ?? 0, last_completed_date ?? null];
+
+        console.log('Running query:', queryText);
+        console.log('With params:', queryParams);
+
+        const results = await pool.query(queryText, queryParams);
+
+        console.log('Insert successful. New row:', results.rows[0]);
+
+        return res.status(201).json(results.rows[0]);
+    } catch (err) {
+        console.error('*** Error creating habit ***');
+        console.error('message:', err.message);
+        console.error('code:', err.code);
+        console.error('detail:', err.detail);
+        console.error('stack:', err.stack);
+
+        return res.status(500).json({
+            error: 'Failed to create habit',
+        });
     }
-    catch (err) {
-        console.error('Error creating habit', err);
-        res.status(500).json({ error: 'Failed to create habit' });
-    }
-}
+};
+
+  
 
 export const editHabit = async (req, res) => {
     const { id } = req.params;
