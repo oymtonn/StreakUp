@@ -17,8 +17,8 @@ const EditTask = () => {
     const fetchTaskData = async () => {
       try {
         const [taskRes, subtasksRes] = await Promise.all([
-          fetch(`http://localhost:3001/tasks/${id}`, { credentials: 'include' }),
-          fetch(`http://localhost:3001/tasks/${id}/subtasks`, { credentials: 'include' })
+          fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, { credentials: 'include' }),
+          fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}/subtasks`, { credentials: 'include' })
         ]);
         
         if (!taskRes.ok) {
@@ -64,7 +64,7 @@ const EditTask = () => {
     setError("");
 
     try {
-      const response = await fetch(`http://localhost:3001/tasks/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: 'include',
@@ -91,7 +91,7 @@ const EditTask = () => {
   const handleDelete = async (event) => {
     event.preventDefault();
     try {
-      await fetch(`http://localhost:3001/tasks/${id}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
         method: "DELETE",
         credentials: 'include'
       });
@@ -124,7 +124,7 @@ const EditTask = () => {
 
     try {
       console.log('Sending request to create subtask...');
-      const response = await fetch('http://localhost:3001/tasks', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -148,7 +148,7 @@ const EditTask = () => {
       setShowSubtaskForm(false);
       
       // Refresh task to get updated progress
-      const taskRes = await fetch(`http://localhost:3001/tasks/${id}`, { credentials: 'include' });
+      const taskRes = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, { credentials: 'include' });
       const updatedTask = await taskRes.json();
       if (updatedTask.due_date) {
         updatedTask.due_date = new Date(updatedTask.due_date).toISOString().split('T')[0];
@@ -164,7 +164,7 @@ const EditTask = () => {
   const handleToggleSubtask = async (subtaskId, currentCompleted) => {
     try {
       const subtask = subtasks.find(st => st.id === subtaskId);
-      const response = await fetch(`http://localhost:3001/tasks/${subtaskId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${subtaskId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -178,7 +178,7 @@ const EditTask = () => {
       setSubtasks(subtasks.map(st => st.id === subtaskId ? updatedSubtask : st));
       
       // Refresh task to get updated progress
-      const taskRes = await fetch(`http://localhost:3001/tasks/${id}`, { credentials: 'include' });
+      const taskRes = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, { credentials: 'include' });
       const updatedTask = await taskRes.json();
       if (updatedTask.due_date) {
         updatedTask.due_date = new Date(updatedTask.due_date).toISOString().split('T')[0];
@@ -191,7 +191,7 @@ const EditTask = () => {
 
   const handleDeleteSubtask = async (subtaskId) => {
     try {
-      await fetch(`http://localhost:3001/tasks/${subtaskId}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/tasks/${subtaskId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -199,7 +199,7 @@ const EditTask = () => {
       setSubtasks(subtasks.filter(st => st.id !== subtaskId));
       
       // Refresh task to get updated progress
-      const taskRes = await fetch(`http://localhost:3001/tasks/${id}`, { credentials: 'include' });
+      const taskRes = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, { credentials: 'include' });
       const updatedTask = await taskRes.json();
       if (updatedTask.due_date) {
         updatedTask.due_date = new Date(updatedTask.due_date).toISOString().split('T')[0];

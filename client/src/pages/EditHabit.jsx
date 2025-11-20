@@ -13,7 +13,7 @@ const EditHabit = () => {
   useEffect(() => {
     const getHabitById = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/habits/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/habits/${id}`, {
           credentials: 'include'
         });
         if (!response.ok) {
@@ -47,7 +47,7 @@ const EditHabit = () => {
     setError("");
 
     try {
-      const response = await fetch(`http://localhost:3001/habits/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/habits/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(habit),
@@ -72,7 +72,7 @@ const EditHabit = () => {
   const handleDelete = async (event) => {
     event.preventDefault();
     try {
-        await fetch(`http://localhost:3001/habits/${id}`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/habits/${id}`, {
             method: "DELETE",
             credentials: 'include'
         });

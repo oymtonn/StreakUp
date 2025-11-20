@@ -21,7 +21,7 @@ const CreateHabit = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3001/habits', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/habits`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

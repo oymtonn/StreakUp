@@ -11,7 +11,7 @@ const Dashboard = () => {
   useEffect(() => {
     const getHabits = async () => {
       try {
-        const res = await fetch('http://localhost:3001/habits', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/habits`, {
           credentials: 'include'
         });
         const data = await res.json();
@@ -27,7 +27,7 @@ const Dashboard = () => {
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const res = await fetch('http://localhost:3001/tasks', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, {
           credentials: 'include'
         });
         const data = await res.json();

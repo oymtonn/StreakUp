@@ -23,7 +23,7 @@ const CreateTask = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3001/tasks', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

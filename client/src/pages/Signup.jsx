@@ -17,7 +17,7 @@ const Signup = () => {
   };
 
   const handleGithubOAuth = () => {
-    window.location.href = 'http://localhost:3001/auth/github';
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/github`;
   };
 
   return (
